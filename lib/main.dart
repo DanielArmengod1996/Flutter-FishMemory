@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:hello_world/RecordButton.dart';
 
 void main() {
@@ -32,30 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Icon btnIcon;
   bool isRecording = false;
 
-  FlutterSoundPlayer playerModule = FlutterSoundPlayer();
-  FlutterSoundRecorder recorderModule = FlutterSoundRecorder();
-  void _incrementCounter() {}
-  void changeIcon() {
-    setState(() {
-      if (isRecording) {
-        // stop
-        this.btnIcon = Icon(
-          Icons.circle,
-          color: Colors.red[600],
-          size: 200,
-        );
-        isRecording = false;
-      } else {
-        //record
-        this.btnIcon = Icon(
-          Icons.circle,
-          color: Colors.black,
-          size: 200,
-        );
-        isRecording = true;
-      }
-    });
-  }
+  //void _incrementCounter() {}
 
   @override
   Widget build(BuildContext context) {
@@ -70,20 +46,15 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'You have pushed the button this many times:',
             ),
-            /*
-              TextButton(
-                onPressed: changeIcon,
-                child: this.btnIcon,
-              ),*/
             LoadingButton(),
           ],
         ),
-      ),
+      ), /*
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ),
+      ),*/
     );
   }
 }

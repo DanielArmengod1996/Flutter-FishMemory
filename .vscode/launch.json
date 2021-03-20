@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    
+    {
+      "name": "hello_world (Flutter)",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "type": "dart"
+    }
+  ]
+}

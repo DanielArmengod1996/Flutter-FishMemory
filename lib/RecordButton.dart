@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
+import 'dart:ui';
 
-int _counter = 1;
+import 'package:flutter/material.dart';
+import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 
 class LoadingButton extends StatefulWidget {
   @override
@@ -10,9 +12,16 @@ class LoadingButton extends StatefulWidget {
 class LoadingButtonState extends State<LoadingButton>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
+  var recorder;
+  var recording;
+  var progressRecNum;
 
   @override
   void initState() {
+    FlutterAudioRecorder.hasPermissions;
+    var recorder = FlutterAudioRecorder("file_path.wav");
+    Future<dynamic> initialized = recorder.initialized;
+    initialized.then((value) => null);
     super.initState();
 
     controller = AnimationController(
@@ -25,34 +34,50 @@ class LoadingButtonState extends State<LoadingButton>
     });
   }
 
+  void startRecording() {
+    recorder.start().then(() => {recording = recorder.current(channel: 0)});
+  }
+
+  void stoptRecording() {
+    var result = recorder.stop();
+    log(result.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     setState(() {
-      if (controller.value != null) {
-        _counter = (controller.value * 100).toInt();
+      if (recorder != null) {
+        var progressRecording;
+        progressRecording = recording.current(channel: 0);
+        progressRecNum = progressRecording.status();
       }
     });
     return GestureDetector(
       onTapDown: (_) {
         controller.forward();
+        startRecording();
       },
       onTapUp: (_) {
         if (controller.status == AnimationStatus.forward) {
           controller.reverseDuration = Duration(
-            seconds: 5,
+            seconds: 1,
           );
           controller.reverse();
         }
+        stoptRecording();
       },
-      child: Stack(
-        alignment: Alignment.topCenter,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Align(
             alignment: Alignment.topCenter,
             child: Text(
-              '$_counter',
+              '$progressRecNum',
               style: Theme.of(context).textTheme.headline4,
             ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
           ),
           Align(
               alignment: Alignment.bottomCenter,
