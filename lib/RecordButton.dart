@@ -5,10 +5,57 @@ import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vibration/vibration.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:intl/intl.dart';
 
 class LoadingButton extends StatefulWidget {
   @override
   LoadingButtonState createState() => LoadingButtonState();
+}
+
+class BasicDateTimeField extends StatelessWidget {
+  final format = DateFormat("yyyy-MM-dd HH:mm");
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      Text('Basic date & time field (${format.pattern})'),
+      DateTimeField(
+        format: format,
+        onShowPicker: (context, currentValue) async {
+          final date = await showDatePicker(
+              context: context,
+              firstDate: DateTime(1900),
+              initialDate: currentValue ?? DateTime.now(),
+              lastDate: DateTime(2100));
+          if (date != null) {
+            final time = await showTimePicker(
+              context: context,
+              initialTime:
+                  TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+            );
+            return DateTimeField.combine(date, time);
+          } else {
+            return currentValue;
+          }
+        },
+      ),
+    ]);
+  }
+}
+
+class NewScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('New Screen')),
+      body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+            BasicDateTimeField(),
+          ])),
+    );
+  }
 }
 
 class LoadingButtonState extends State<LoadingButton>
@@ -66,6 +113,9 @@ class LoadingButtonState extends State<LoadingButton>
     }
 
     micIcon = null;
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => NewScreen()));
   }
 
   void stopFunction() {

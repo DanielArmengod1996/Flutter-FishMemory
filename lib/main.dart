@@ -33,16 +33,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Icon btnIcon;
   bool isRecording = false;
 
-  Future<DateTime> loadDatePicker() async {
-    // carga de datos para logear etc...
-
-    return Future.value(showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2222)));
-  }
-
   //void _incrementCounter() {}
 
   @override
@@ -55,12 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-              child: Text('Select a date'),
-              onPressed: () {
-                loadDatePicker().then((value) => print(value));
-              },
-            ),
             LoadingButton(),
             Padding(
               padding: EdgeInsets.all(16.0),
