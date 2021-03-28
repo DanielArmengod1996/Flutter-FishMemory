@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/RecordButton.dart';
+import 'package:hello_world/CustomSplash.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  initSplash();
 }
 
 class MyApp extends StatelessWidget {
@@ -31,6 +33,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Icon btnIcon;
   bool isRecording = false;
 
+  Future<DateTime> loadDatePicker() async {
+    // carga de datos para logear etc...
+
+    return Future.value(showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2222)));
+  }
+
   //void _incrementCounter() {}
 
   @override
@@ -43,10 +55,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            ElevatedButton(
+              child: Text('Select a date'),
+              onPressed: () {
+                loadDatePicker().then((value) => print(value));
+              },
             ),
             LoadingButton(),
+            Padding(
+              padding: EdgeInsets.all(16.0),
+            ),
+            Text(
+              'Hold pressing the button to record the audio reminder:',
+            ),
           ],
         ),
       ), /*
